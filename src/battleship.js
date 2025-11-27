@@ -22,6 +22,8 @@ class Gameboard {
 				this.board[i][j] = null;
 			}
 		}
+		this.ships = [];
+		this.missedAttacks = [];
 	}
 	placeShip(ship, x, y, isVertical) {
 		if (isVertical) {
@@ -40,6 +42,7 @@ class Gameboard {
 			target.hit();
 			return true; // Hit
 		}
+		this.missedAttacks.push([x, y]);
 		return false; // Miss
 	}
 	hasLost() {
