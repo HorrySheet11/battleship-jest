@@ -61,8 +61,8 @@ class Gameboard {
 class Player {
     constructor(name) {
         this.name = name;
-        this.gameboard = new Gameboard();
+        this.gameBoard = new Gameboard();
     }
 }
 
-module.exports = {Ship, Gameboard, Player};
+module.exports = {Ship, Player};

@@ -16,3 +16,33 @@ body {
     line-height: 1.6;
     padding: 20px;
 }
+.battleship{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    justify-items: center;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 2px;
+    justify-content: center;
+    margin: 20px auto;
+}
+.cell{
+    width: 40px;
+    height: 40px;
+    border: 1px solid #333;
+    background-color: #87ceeb;
+    cursor: pointer;
+}
+
+.ship{
+    background-color: #4682b4;
+}
+
+.miss{
+    background-color: #d3d3d3;
+}
