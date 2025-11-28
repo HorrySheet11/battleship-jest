@@ -86,7 +86,7 @@ class generateGame {
       this.changeTurn();
     }
     if (this.currentTurn === this.player2) {
-      this.computerAction();
+      setTimeout(()=>this.computerAction(), 2000);
     }
 	}
 
