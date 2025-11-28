@@ -3,6 +3,12 @@ import { Player, Ship } from "./battleship.js";
 const playerBoard = document.getElementById("player-board");
 const computerBoard = document.getElementById("computer-board");
 const turn = document.querySelector(".turn");
+const playerNameInput = document.getElementById("player-name");
+
+playerNameInput.addEventListener("change", () => {
+  game.player1.name = playerNameInput.value || "Player 1";
+  turn.textContent = `Turn: ${game.currentTurn.name}`;
+});
 
 class generateGame {
 	constructor() {
@@ -70,11 +76,22 @@ class generateGame {
 	}
 
 	attackPlayer(player, x, y) {
-		player.gameBoard.receiveAttack(x, y);
+		const action = player.gameBoard.receiveAttack(x, y);
     this.updateGrid(player === this.player1 ? playerBoard : computerBoard, player.gameBoard);
+    if (player.gameBoard.hasLost()) {
+      alert(`${this.currentTurn.name} wins!`);
+      return;
+    }
+    if(action === false){
+      this.changeTurn();
+    }
+    if (this.currentTurn === this.player2) {
+      this.computerAction();
+    }
 	}
 
 	computerAction() {
+    console.log('Computer Action:');
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
     this.attackPlayer(this.player1, x, y);
@@ -85,3 +102,4 @@ const game = new generateGame();
 game.startGame();
 game.createUpdateGrid(playerBoard, game.player1);
 game.createUpdateGrid(computerBoard, game.player2);
+game.player2.name = "Computer";
