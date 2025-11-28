@@ -24,6 +24,7 @@ class Gameboard {
 		}
 		this.ships = [];
 		this.missedAttacks = [];
+		this.hits = [];
 	}
 	placeShip(ship, x, y, isVertical) {
 		if (isVertical) {
@@ -37,12 +38,22 @@ class Gameboard {
 		}
 	}
 	receiveAttack(x, y) {
+		if ([...this.missedAttacks, ...this.hits].some(coord => coord[0] === x && coord[1] === y)) {
+			console.log('Attack already made at: ', x, y);
+			return null; // Attack already made here
+		}
 		const target = this.board[x][y];
 		if (target instanceof Ship) {
 			target.hit();
+			this.hits.push([x, y]);
+			console.log("Hit registered on ship at:", x, y);
+			console.log(this.hits);
 			return true; // Hit
 		}
 		this.missedAttacks.push([x, y]);
+		console.log('Missed attack: ', x, y);
+		console.log(this.missedAttacks);
+		
 		return false; // Miss
 	}
 	hasLost() {
@@ -63,6 +74,10 @@ class Player {
         this.name = name;
         this.gameBoard = new Gameboard();
     }
+
+    getGameBoard() {
+        return this.gameBoard;
+    }
 }
 
-module.exports = {Ship, Player};
+export {Player, Ship};
