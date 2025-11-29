@@ -3,40 +3,32 @@ import { Player, Ship } from "./battleship.js";
 const playerBoard = document.getElementById("player-board");
 const computerBoard = document.getElementById("computer-board");
 const turn = document.querySelector(".turn");
-const playerNameInput = document.getElementById("player-name");
+const playerNameInput = document.getElementById("player-input");
+const playerName2Input = document.getElementById("player2-input");
+const player1nameDisplay = document.getElementById("player1name");
+const player2nameDisplay = document.getElementById("player2name");
 
-playerNameInput.addEventListener("change", (event) => {
-  if (event.key !== 'Enter') 		{
-			event.preventDefault();
-			if (!game.player1.name) {
-				game.player1.name = playerNameInput.value;
-        playerNameInput.value = "";
-			} else if (!game.player2.name) {
-				if (playerNameInput.value.toLowerCase() === "computer") {
-					game.player2.name = "Computer";
-				}else{
-          game.player2.name = playerNameInput.value || "Player 2";  
-        }
-			}
-		}
-  // game.player1.name = playerNameInput.value || "Player 1";
-  // playerNameInput.value = "";
-  // while(!game.player2.name){
-  //   if(playerNameInput.value === 'computer'){
-  //     game.player2.name = "Computer";
-  //   }else{
-  //     game.player2.name = playerNameInput.value || "Player 2";  
-  //   }
-  // }
-  
-  turn.textContent = `Turn: ${game.currentTurn.name}`;
+playerNameInput.addEventListener("change", () => {
+	game.player1.name = playerNameInput.value || "Player 1";
+  player1nameDisplay.textContent = game.player1.name;
+  playerNameInput.hidden = true;
+  playerName2Input.hidden = false;
+});
 
+playerName2Input.addEventListener("change", () => {
+	game.player2.name = playerName2Input.value || "Computer";
+  if(game.player2.name.toLowerCase() === "computer"){
+    game.player2.name = "Computer";
+  }
+  player2nameDisplay.textContent = game.player2.name;
+  playerName2Input.hidden = true;
+	turn.textContent = `Turn: ${game.currentTurn.name}`;
 });
 
 class generateGame {
 	constructor() {
-		this.player1 = new Player("Player 1");
-		this.player2 = new Player("Player 2");
+		this.player1 = new Player("");
+		this.player2 = new Player("");
 		this.currentTurn = this.player1;
 	}
 
@@ -91,13 +83,13 @@ class generateGame {
 		this.currentTurn =
 			this.currentTurn === this.player1 ? this.player2 : this.player1;
 		turn.textContent = `Turn: ${this.currentTurn.name}`;
-    if (this.currentTurn === this.player1){
-      playerBoard.style.pointerEvents = "none";
-      computerBoard.style.pointerEvents = "auto";
-    }else{
-      playerBoard.style.pointerEvents = "auto";
-      computerBoard.style.pointerEvents = "none";
-    }
+		if (this.currentTurn === this.player1) {
+			playerBoard.style.pointerEvents = "none";
+			computerBoard.style.pointerEvents = "auto";
+		} else {
+			playerBoard.style.pointerEvents = "auto";
+			computerBoard.style.pointerEvents = "none";
+		}
 	}
 
 	createUpdateGrid(boardElement, player) {

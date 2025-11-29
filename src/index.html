@@ -9,13 +9,13 @@
 <body>
     <h1>Welcome to Battleship Game</h1>
     <div class="battleship">
-        <h2 class="turn">New Player: <input type="text" id="player-name"></h2>
+        <h2 class="turn">New Player: <input type="text" id="player-input" placeholder="1st Player name"><input hidden type="text" id="player2-input" placeholder="2nd Player name or Computer"></h2>
         <div class="player1div">
-            <h2>Player</h2>
+            <h2 id="player1name">Player</h2>
             <div id="player-board" class="grid"></div>
         </div>
         <div class="player2div">
-            <h2>Computer</h2>
+            <h2 id="player2name">Computer</h2>
             <div id="computer-board" class="grid"></div>
         </div>
     </div>
