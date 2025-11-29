@@ -5,9 +5,32 @@ const computerBoard = document.getElementById("computer-board");
 const turn = document.querySelector(".turn");
 const playerNameInput = document.getElementById("player-name");
 
-playerNameInput.addEventListener("change", () => {
-  game.player1.name = playerNameInput.value || "Player 1";
+playerNameInput.addEventListener("change", (event) => {
+  if (event.key !== 'Enter') 		{
+			event.preventDefault();
+			if (!game.player1.name) {
+				game.player1.name = playerNameInput.value;
+        playerNameInput.value = "";
+			} else if (!game.player2.name) {
+				if (playerNameInput.value.toLowerCase() === "computer") {
+					game.player2.name = "Computer";
+				}else{
+          game.player2.name = playerNameInput.value || "Player 2";  
+        }
+			}
+		}
+  // game.player1.name = playerNameInput.value || "Player 1";
+  // playerNameInput.value = "";
+  // while(!game.player2.name){
+  //   if(playerNameInput.value === 'computer'){
+  //     game.player2.name = "Computer";
+  //   }else{
+  //     game.player2.name = playerNameInput.value || "Player 2";  
+  //   }
+  // }
+  
   turn.textContent = `Turn: ${game.currentTurn.name}`;
+
 });
 
 class generateGame {
@@ -67,7 +90,14 @@ class generateGame {
 	changeTurn() {
 		this.currentTurn =
 			this.currentTurn === this.player1 ? this.player2 : this.player1;
-    turn.textContent = `Turn: ${this.currentTurn.name}`;
+		turn.textContent = `Turn: ${this.currentTurn.name}`;
+    if (this.currentTurn === this.player1){
+      playerBoard.style.pointerEvents = "none";
+      computerBoard.style.pointerEvents = "auto";
+    }else{
+      playerBoard.style.pointerEvents = "auto";
+      computerBoard.style.pointerEvents = "none";
+    }
 	}
 
 	createUpdateGrid(boardElement, player) {
@@ -77,24 +107,27 @@ class generateGame {
 
 	attackPlayer(player, x, y) {
 		const action = player.gameBoard.receiveAttack(x, y);
-    this.updateGrid(player === this.player1 ? playerBoard : computerBoard, player.gameBoard);
-    if (player.gameBoard.hasLost()) {
-      alert(`${this.currentTurn.name} wins!`);
-      return;
-    }
-    if(action === false){
-      this.changeTurn();
-    }
-    if (this.currentTurn === this.player2) {
-      setTimeout(()=>this.computerAction(), 2000);
-    }
+		this.updateGrid(
+			player === this.player1 ? playerBoard : computerBoard,
+			player.gameBoard,
+		);
+		if (player.gameBoard.hasLost()) {
+			alert(`${this.currentTurn.name} wins!`);
+			return;
+		}
+		if (action === false) {
+			this.changeTurn();
+		}
+		if (this.currentTurn === this.player2 && this.player2.name === "Computer") {
+			setTimeout(() => this.computerAction(), 2000);
+		}
 	}
 
 	computerAction() {
-    console.log('Computer Action:');
-    const x = Math.floor(Math.random() * 10);
-    const y = Math.floor(Math.random() * 10);
-    this.attackPlayer(this.player1, x, y);
+		console.log("Computer Action:");
+		const x = Math.floor(Math.random() * 10);
+		const y = Math.floor(Math.random() * 10);
+		this.attackPlayer(this.player1, x, y);
 	}
 }
 
