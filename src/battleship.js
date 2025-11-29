@@ -47,7 +47,7 @@ class Gameboard {
 			target.hit();
 			this.hits.push([x, y]);
 			console.log("Hit registered on ship at:", x, y);
-			console.log(this.hits);
+			console.log(`Hits: ${this.hits}`);
 			return true; // Hit
 		}
 		this.missedAttacks.push([x, y]);

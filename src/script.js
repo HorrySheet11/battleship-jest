@@ -10,18 +10,19 @@ const player2nameDisplay = document.getElementById("player2name");
 
 playerNameInput.addEventListener("change", () => {
 	game.player1.name = playerNameInput.value || "Player 1";
-  player1nameDisplay.textContent = game.player1.name;
-  playerNameInput.hidden = true;
-  playerName2Input.hidden = false;
+	player1nameDisplay.textContent = game.player1.name;
+	playerNameInput.hidden = true;
+	playerName2Input.hidden = false;
 });
 
 playerName2Input.addEventListener("change", () => {
 	game.player2.name = playerName2Input.value || "Computer";
-  if(game.player2.name.toLowerCase() === "computer"){
-    game.player2.name = "Computer";
-  }
-  player2nameDisplay.textContent = game.player2.name;
-  playerName2Input.hidden = true;
+	if (game.player2.name.toLowerCase() === "computer") {
+		game.player2.name = "Computer";
+	}
+	player2nameDisplay.textContent = game.player2.name;
+	playerName2Input.hidden = true;
+  computerBoard.style.pointerEvents = "auto";
 	turn.textContent = `Turn: ${game.currentTurn.name}`;
 });
 
@@ -37,6 +38,8 @@ class generateGame {
 		this.player1.gameBoard.placeShip(new Ship(3), 3, 3, false);
 		this.player2.gameBoard.placeShip(new Ship(2), 0, 0, true);
 		this.player2.gameBoard.placeShip(new Ship(3), 2, 2, false);
+    playerBoard.style.pointerEvents = "none";
+		computerBoard.style.pointerEvents = "none";
 	}
 
 	createGrid(boardElement) {
@@ -65,15 +68,23 @@ class generateGame {
 				const cell = cells[i * 10 + j];
 				const ship = gameBoard.board[i][j];
 				if (ship instanceof Ship) {
-					cell.classList.add("ship");
+					if (ship.isSunk()) {
+						cell.classList.add("sunk");
+						continue;
+					}
+					if (cell.classList.contains("ship") && gameBoard.hits.some(
+            (attack) => attack[0] === i && attack[1] === j,
+          )) {
+						cell.classList.add("hit");
+					} else {
+						cell.classList.add("ship");
+					}
 				} else if (
 					gameBoard.missedAttacks.some(
 						(attack) => attack[0] === i && attack[1] === j,
 					)
 				) {
 					cell.classList.add("miss");
-				} else if (gameBoard.hits.some((hit) => hit[0] === i && hit[1] === j)) {
-					cell.classList.add("hit");
 				}
 			}
 		}
