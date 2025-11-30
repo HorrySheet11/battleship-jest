@@ -10,7 +10,7 @@ const player2nameDisplay = document.getElementById("player2name");
 const actionText = document.getElementById("action-text");
 
 document.querySelector(".restart").addEventListener("click", () => {
-  location.reload();
+	location.reload();
 });
 
 playerNameInput.addEventListener("change", () => {
@@ -39,10 +39,27 @@ class generateGame {
 	}
 
 	startGame() {
-		this.player1.gameBoard.placeShip(new Ship(2), 1, 1, true);
-		this.player1.gameBoard.placeShip(new Ship(3), 3, 3, false);
-		this.player2.gameBoard.placeShip(new Ship(2), 0, 0, true);
-		this.player2.gameBoard.placeShip(new Ship(3), 2, 2, false);
+		let player1ShipCount = 0;
+    let player2ShipCount = 0;
+
+    while (player1ShipCount < 5){
+      const shipLength = Math.floor(Math.random() * 4) + 2; // Ships of length 2 to 5
+      const coordInput = prompt(`Player 1, enter of ship ${player1ShipCount+1} length ${shipLength} (format: x,y,orientation[v/h]):`);
+      const [x, y, orientation] = coordInput.split(',');
+      const isVertical = orientation.toLowerCase()  === 'v';
+      const ship = new Ship(shipLength);
+      this.player1.gameBoard.placeShip(ship, parseInt(x), parseInt(y), isVertical);
+      player1ShipCount++;
+    }
+    while (player2ShipCount < 5){
+      const shipLength = Math.floor(Math.random() * 4) + 2; // Ships of length 2 to 5
+      const coordInput = prompt(`Player 2, enter of ship ${player2ShipCount+1} length ${shipLength} (format: x,y,orientation[v/h]):`);
+      const [x, y, orientation] = coordInput.split(',');
+      const isVertical = orientation.toLowerCase()  === 'v';
+      const ship = new Ship(shipLength);
+      this.player2.gameBoard.placeShip(ship, parseInt(x), parseInt(y), isVertical);
+      player2ShipCount++;
+    }
 		playerBoard.style.pointerEvents = "none";
 		computerBoard.style.pointerEvents = "none";
 	}
@@ -76,6 +93,7 @@ class generateGame {
 					if (ship.isSunk()) {
 						cell.classList.add("hit");
 						cell.classList.add("sunk");
+						actionText.textContent = "A ship has sunk!";
 						continue;
 					}
 					if (
@@ -126,9 +144,9 @@ class generateGame {
 		);
 		if (player.gameBoard.hasLost()) {
 			turn.textContent = "Game Over";
-	    playerBoard.style.pointerEvents = "none";
+			playerBoard.style.pointerEvents = "none";
 			computerBoard.style.pointerEvents = "none";
-      document.querySelector(".restart").hidden = false;
+			document.querySelector(".restart").hidden = false;
 			alert(`${this.currentTurn.name} wins!`);
 			return;
 		}
