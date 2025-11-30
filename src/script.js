@@ -70,7 +70,7 @@ class generateGame {
 				const ship = gameBoard.board[i][j];
 				if (ship instanceof Ship) {
 					if (ship.isSunk()) {
-            cell.classList.add("hit");
+						cell.classList.add("hit");
 						cell.classList.add("sunk");
 						continue;
 					}
@@ -113,12 +113,17 @@ class generateGame {
 
 	attackPlayer(player, x, y) {
 		const action = player.gameBoard.receiveAttack(x, y);
-    actionText.textContent = action ? `Hit at ${x}, ${y}!` : `Miss at ${x}, ${y}`;
+		actionText.textContent = action
+			? `Hit at ${x}, ${y}!`
+			: `Miss at ${x}, ${y}`;
 		this.updateGrid(
 			player === this.player1 ? playerBoard : computerBoard,
 			player.gameBoard,
 		);
 		if (player.gameBoard.hasLost()) {
+			turn.textContent = "Game Over";
+	    playerBoard.style.pointerEvents = "none";
+			computerBoard.style.pointerEvents = "none";
 			alert(`${this.currentTurn.name} wins!`);
 			return;
 		}
