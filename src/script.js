@@ -9,6 +9,10 @@ const player1nameDisplay = document.getElementById("player1name");
 const player2nameDisplay = document.getElementById("player2name");
 const actionText = document.getElementById("action-text");
 
+document.querySelector(".restart").addEventListener("click", () => {
+  location.reload();
+});
+
 playerNameInput.addEventListener("change", () => {
 	game.player1.name = playerNameInput.value || "Player 1";
 	player1nameDisplay.textContent = game.player1.name;
@@ -124,6 +128,7 @@ class generateGame {
 			turn.textContent = "Game Over";
 	    playerBoard.style.pointerEvents = "none";
 			computerBoard.style.pointerEvents = "none";
+      document.querySelector(".restart").hidden = false;
 			alert(`${this.currentTurn.name} wins!`);
 			return;
 		}

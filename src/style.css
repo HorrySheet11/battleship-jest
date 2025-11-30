@@ -64,3 +64,16 @@ body {
     grid-column: span 2;
     font-size: 20px;
 }
+.restart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.restart:hover {
+    background-color: #45a049;
+}
