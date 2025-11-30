@@ -7,6 +7,7 @@ const playerNameInput = document.getElementById("player-input");
 const playerName2Input = document.getElementById("player2-input");
 const player1nameDisplay = document.getElementById("player1name");
 const player2nameDisplay = document.getElementById("player2name");
+const actionText = document.getElementById("action-text");
 
 playerNameInput.addEventListener("change", () => {
 	game.player1.name = playerNameInput.value || "Player 1";
@@ -22,7 +23,7 @@ playerName2Input.addEventListener("change", () => {
 	}
 	player2nameDisplay.textContent = game.player2.name;
 	playerName2Input.hidden = true;
-  computerBoard.style.pointerEvents = "auto";
+	computerBoard.style.pointerEvents = "auto";
 	turn.textContent = `Turn: ${game.currentTurn.name}`;
 });
 
@@ -38,7 +39,7 @@ class generateGame {
 		this.player1.gameBoard.placeShip(new Ship(3), 3, 3, false);
 		this.player2.gameBoard.placeShip(new Ship(2), 0, 0, true);
 		this.player2.gameBoard.placeShip(new Ship(3), 2, 2, false);
-    playerBoard.style.pointerEvents = "none";
+		playerBoard.style.pointerEvents = "none";
 		computerBoard.style.pointerEvents = "none";
 	}
 
@@ -69,12 +70,14 @@ class generateGame {
 				const ship = gameBoard.board[i][j];
 				if (ship instanceof Ship) {
 					if (ship.isSunk()) {
+            cell.classList.add("hit");
 						cell.classList.add("sunk");
 						continue;
 					}
-					if (cell.classList.contains("ship") && gameBoard.hits.some(
-            (attack) => attack[0] === i && attack[1] === j,
-          )) {
+					if (
+						cell.classList.contains("ship") &&
+						gameBoard.hits.some((attack) => attack[0] === i && attack[1] === j)
+					) {
 						cell.classList.add("hit");
 					} else {
 						cell.classList.add("ship");
@@ -110,6 +113,7 @@ class generateGame {
 
 	attackPlayer(player, x, y) {
 		const action = player.gameBoard.receiveAttack(x, y);
+    actionText.textContent = action ? `Hit at ${x}, ${y}!` : `Miss at ${x}, ${y}`;
 		this.updateGrid(
 			player === this.player1 ? playerBoard : computerBoard,
 			player.gameBoard,
